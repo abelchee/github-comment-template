@@ -8,7 +8,7 @@ const FormGroup: React.FC<PropsWithChildren> = ({ children }) => {
   return <div className="space-y-2">{children}</div>;
 };
 
-const Options = () => {
+export const Options = () => {
   const [template1, setTemplate1] = useState<string>("");
   const [template2, setTemplate2] = useState<string>("");
   const [status, setStatus] = useState("");
@@ -69,7 +69,7 @@ const Options = () => {
       <div className="w-full space-y-2">
         <FormGroup>
           <div>
-            <label>Template1</label>
+            <label>Template1 [command+shift+1]</label>
           </div>
           <div>
             <textarea
@@ -82,7 +82,7 @@ const Options = () => {
         </FormGroup>
         <FormGroup>
           <div>
-            <label>Template2</label>
+            <label>Template2 [command+shift+2]</label>
           </div>
           <div>
             <textarea

@@ -1,22 +1,28 @@
-import React, { useEffect, useState } from "react";
+import "./style.css";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import { defaultTemplate1, defaultTemplate2 } from "./template";
+import { Button } from "./Button";
+
+const FormGroup: React.FC<PropsWithChildren> = ({ children }) => {
+  return <div className="space-y-2">{children}</div>;
+};
 
 const Options = () => {
-  const [color, setColor] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
-  const [like, setLike] = useState<boolean>(false);
-
+  const [template1, setTemplate1] = useState<string>("");
+  const [template2, setTemplate2] = useState<string>("");
+  const [status, setStatus] = useState("");
   useEffect(() => {
     // Restores select box and checkbox state using the preferences
     // stored in chrome.storage.
     chrome.storage.sync.get(
       {
-        favoriteColor: "red",
-        likesColor: true,
+        template1: defaultTemplate1,
+        template2: defaultTemplate2,
       },
       (items) => {
-        setColor(items.favoriteColor);
-        setLike(items.likesColor);
+        setTemplate1(items.template1);
+        setTemplate2(items.template2);
       }
     );
   }, []);
@@ -25,8 +31,8 @@ const Options = () => {
     // Saves options to chrome.storage.sync.
     chrome.storage.sync.set(
       {
-        favoriteColor: color,
-        likesColor: like,
+        template1,
+        template2,
       },
       () => {
         // Update status to let user know options were saved.
@@ -39,32 +45,65 @@ const Options = () => {
     );
   };
 
+  const resetOptions = () => {
+    chrome.storage.sync.set(
+      {
+        template1: defaultTemplate1,
+        template2: defaultTemplate2,
+      },
+      () => {
+        setTemplate1(defaultTemplate1);
+        setTemplate2(defaultTemplate2);
+        // Update status to let user know options were saved.
+        setStatus("Options reset.");
+        const id = setTimeout(() => {
+          setStatus("");
+        }, 1000);
+        return () => clearTimeout(id);
+      }
+    );
+  };
+
   return (
-    <>
-      <div>
-        Favorite color: <select
-          value={color}
-          onChange={(event) => setColor(event.target.value)}
-        >
-          <option value="red">red</option>
-          <option value="green">green</option>
-          <option value="blue">blue</option>
-          <option value="yellow">yellow</option>
-        </select>
+    <div className="p-4 w-[800px]">
+      <div className="w-full space-y-2">
+        <FormGroup>
+          <div>
+            <label>Template1</label>
+          </div>
+          <div>
+            <textarea
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-double focus:shadow-outline"
+              rows={10}
+              value={template1}
+              onChange={(event) => setTemplate1(event.target.value)}
+            />
+          </div>
+        </FormGroup>
+        <FormGroup>
+          <div>
+            <label>Template2</label>
+          </div>
+          <div>
+            <textarea
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-double focus:shadow-outline"
+              rows={10}
+              value={template2}
+              onChange={(event) => setTemplate2(event.target.value)}
+            />
+          </div>
+        </FormGroup>
+        <div className="flex flex-row justify-between">
+          <Button variant="secondary" onClick={resetOptions}>
+            Reset
+          </Button>
+          <Button variant="primary" onClick={saveOptions}>
+            Save
+          </Button>
+        </div>
+        <div>{status}</div>
       </div>
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={like}
-            onChange={(event) => setLike(event.target.checked)}
-          />
-          I like colors.
-        </label>
-      </div>
-      <div>{status}</div>
-      <button onClick={saveOptions}>Save</button>
-    </>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 function toUTF16(codePoint: number) {
-  var TEN_BITS = parseInt("1111111111", 2);
+  let TEN_BITS = parseInt("1111111111", 2);
   function u(codeUnit: number) {
     return "\\u" + codeUnit.toString(16).toUpperCase();
   }
@@ -10,10 +10,10 @@ function toUTF16(codePoint: number) {
   codePoint -= 0x10000;
 
   // Shift right to get to most significant 10 bits
-  var leadSurrogate = 0xd800 + (codePoint >> 10);
+  let leadSurrogate = 0xd800 + (codePoint >> 10);
 
   // Mask to get least significant 10 bits
-  var tailSurrogate = 0xdc00 + (codePoint & TEN_BITS);
+  let tailSurrogate = 0xdc00 + (codePoint & TEN_BITS);
 
   return u(leadSurrogate) + u(tailSurrogate);
 }

@@ -39,4 +39,5 @@ export const defaultTemplate1 = `### What type of comment I am giving?:
 - [ ] I am trying to be helpful
 `;
 
-export const defaultTemplate2 = `\uD83E\uDD80 This is super good \uD83E\uDD80`;
+export const defaultTemplate2 = `\uD83E\uDD80 This is super good \uD83E\uDD80
+`;

@@ -35,7 +35,7 @@ export const defaultTemplate1 = `### What type of comment I am giving?:
 \uD83E\uDD80
 
 ### Self check <!-- Should be removed -->
-- [ ] I am not causing confusion
+- [ ] I am not causing any confusion
 - [ ] I am trying to be helpful
 `;
 
